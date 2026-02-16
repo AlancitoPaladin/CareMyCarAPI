@@ -1,0 +1,4 @@
+vehicle_make,vehicle_model,vehicle_year,current_mileage,last_service_type,last_service_mileage,days_since_last_service,next_service_due_km
+Toyota,Corolla,2020,65000,oil_change,56000,120,76000
+Honda,Civic,2018,98000,brake_check,93000,80,103000
+Ford,Focus,2016,120000,oil_change,111000,140,121000

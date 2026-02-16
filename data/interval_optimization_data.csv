@@ -1,0 +1,16 @@
+usage_type,driving_conditions,fuel_type,vehicle_type,current_mileage,average_mileage_monthly,engine_hours,recommended_oil_change_interval_km
+ciudad,severas,gasolina,sedan,80000,2400,1600,6000
+ciudad,normales,gasolina,sedan,50000,1800,1100,7000
+carretera,normales,diesel,pickup,120000,2600,2200,9000
+mixto,normales,gasolina,suv,70000,1900,1400,8000
+ciudad,severas,diesel,pickup,140000,2800,2600,5500
+carretera,suaves,gasolina,sedan,60000,1500,900,10000
+mixto,severas,gasolina,suv,95000,2300,2000,6500
+ciudad,normales,hibrido,suv,88000,2100,1700,7000
+mixto,normales,electrico,sedan,56000,1700,1000,9500
+carretera,normales,gasolina,pickup,110000,2400,2100,8800
+ciudad,severas,gasolina,hatchback,45000,2000,1200,6200
+mixto,normales,diesel,suv,102000,2200,1800,7600
+carretera,suaves,diesel,pickup,130000,2500,2400,9200
+ciudad,normales,gasolina,sedan,77000,2100,1500,6800
+mixto,severas,hibrido,suv,93000,2350,1750,6400

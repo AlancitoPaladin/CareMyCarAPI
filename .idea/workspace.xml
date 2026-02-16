@@ -1,7 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="e22524c6-47f8-4072-9abf-f3262fb39f10" name="Changes" comment="" />
+    <list default="true" id="e22524c6-47f8-4072-9abf-f3262fb39f10" name="Changes" comment="First commit">
+      <change afterPath="$PROJECT_DIR$/app/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/config.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/ml_model/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/ml_model/model.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/ml_model/predict.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/ml_model/train_model.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/models/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/models/maintenance.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/models/user.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/models/vehicle.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/routes/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/routes/auth.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/routes/maintenance.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/routes/predictions.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/routes/shared.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/routes/vehicles.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/utils/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/utils/db.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/utils/decorators.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/utils/validators.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/interval_optimization_data.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/maintenance_costs.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/maintenance_intervals.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/training_data.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/run.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -10,9 +42,21 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 1
-}]]></component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;AlancitoPaladin&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/AlancitoPaladin/CareMyCarAPI.git&quot;,
+    &quot;accountId&quot;: &quot;dced1cf6-0309-4a57-b2f3-8a6e8a3837c6&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
   <component name="ProjectId" id="39RwrhpsOnFx1qNtF27wZjMtWX1" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -21,9 +65,76 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true"
+    "Python.main.executor": "Run",
+    "Python.run.executor": "Run",
+    "Python.train_model.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "/Users/alancarloshernandezhernandez/PycharmProjects/CareMyCarAPI/data"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/data" />
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/app/routes" />
+      <recent name="$PROJECT_DIR$/app/ml_model" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.run">
+    <configuration name="run" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="CareMyCarAPI" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/run.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="train_model" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="CareMyCarAPI" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/app/ml_model" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/app/ml_model/train_model.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.run" />
+        <item itemvalue="Python.train_model" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -39,6 +150,19 @@
       <option name="presentableId" value="Default" />
       <updated>1770672392302</updated>
     </task>
+    <task id="LOCAL-00001" summary="First commit">
+      <option name="closed" value="true" />
+      <created>1770672452601</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1770672452601</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="First commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="First commit" />
   </component>
 </project>
