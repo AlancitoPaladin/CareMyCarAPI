@@ -11,13 +11,17 @@ class User:
     collection = "users"
 
     @staticmethod
-    def create(email, password, name=None):
+    def create(email, password, name=None, role="user"):
         db = get_db()
         now = datetime.now(timezone.utc)
+        normalized_role = (role or "user").strip().lower()
+        if normalized_role not in {"user", "admin"}:
+            normalized_role = "user"
         user = {
             "email": email,
             "password_hash": generate_password_hash(password),
             "name": name,
+            "role": normalized_role,
             "created_at": now,
         }
         inserted = db[User.collection].insert_one(user)
@@ -49,6 +53,7 @@ class User:
             "id": str(user["_id"]),
             "email": user["email"],
             "name": user.get("name"),
+            "role": user.get("role", "user"),
             "created_at": user.get("created_at").isoformat() if user.get("created_at") else None,
         }
 
