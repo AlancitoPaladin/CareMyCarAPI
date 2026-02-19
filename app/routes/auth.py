@@ -16,12 +16,12 @@ def register():
     name = (payload.get("name") or "").strip() or None
 
     if not validate_email(email):
-        return {"error": "Email inválido"}, 400
+        return {"error": "Invalid email"}, 400
     if not validate_password(password):
-        return {"error": "Contraseña inválida"}, 400
+        return {"error": "Invalid password"}, 400
 
     if User.find_by_email(email):
-        return {"error": "Correo ya registrado"}, 409
+        return {"error": "Email already registered"}, 409
 
     created = User.create(email=email, password=password, name=name)
     return {"user": User.to_public(created)}, 201
@@ -35,7 +35,7 @@ def login():
 
     user = User.find_by_email(email)
     if not user or not User.verify_password(user, password):
-        return {"error": "Credenciales inválidas"}, 401
+        return {"error": "Invalid credentials"}, 401
 
     token = create_access_token(user["_id"])
     return {"access_token": token, "user": User.to_public(user)}, 200

@@ -1,0 +1,16 @@
+[
+  {"id":"toyota_corolla","make":"Toyota","model":"Corolla","vehicle_type":"sedan","fuel_type":"gasolina","transmission":"automatica","image_urls":[]},
+  {"id":"honda_civic","make":"Honda","model":"Civic","vehicle_type":"sedan","fuel_type":"gasolina","transmission":"manual","image_urls":[]},
+  {"id":"ford_ranger","make":"Ford","model":"Ranger","vehicle_type":"pickup","fuel_type":"diesel","transmission":"manual","image_urls":[]},
+  {"id":"nissan_sentra","make":"Nissan","model":"Sentra","vehicle_type":"sedan","fuel_type":"gasolina","transmission":"automatica","image_urls":[]},
+  {"id":"nissan_xtrail","make":"Nissan","model":"Xtrail","vehicle_type":"suv","fuel_type":"gasolina","transmission":"automatica","image_urls":[]},
+  {"id":"volkswagen_jetta","make":"Volkswagen","model":"Jetta","vehicle_type":"sedan","fuel_type":"gasolina","transmission":"automatica","image_urls":[]},
+  {"id":"chevrolet_onix","make":"Chevrolet","model":"Onix","vehicle_type":"hatchback","fuel_type":"gasolina","transmission":"manual","image_urls":[]},
+  {"id":"chevrolet_tracker","make":"Chevrolet","model":"Tracker","vehicle_type":"suv","fuel_type":"gasolina","transmission":"automatica","image_urls":[]},
+  {"id":"hyundai_tucson","make":"Hyundai","model":"Tucson","vehicle_type":"suv","fuel_type":"hibrido","transmission":"automatica","image_urls":[]},
+  {"id":"kia_rio","make":"Kia","model":"Rio","vehicle_type":"hatchback","fuel_type":"gasolina","transmission":"manual","image_urls":[]},
+  {"id":"mazda_3","make":"Mazda","model":"3","vehicle_type":"sedan","fuel_type":"gasolina","transmission":"automatica","image_urls":[]},
+  {"id":"toyota_hilux","make":"Toyota","model":"Hilux","vehicle_type":"pickup","fuel_type":"diesel","transmission":"manual","image_urls":[]},
+  {"id":"tesla_model3","make":"Tesla","model":"Model3","vehicle_type":"sedan","fuel_type":"electrico","transmission":"automatica","image_urls":[]},
+  {"id":"jeep_compass","make":"Jeep","model":"Compass","vehicle_type":"suv","fuel_type":"gasolina","transmission":"automatica","image_urls":[]}
+]

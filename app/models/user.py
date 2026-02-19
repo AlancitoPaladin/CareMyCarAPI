@@ -49,7 +49,6 @@ class User:
             "id": str(user["_id"]),
             "email": user["email"],
             "name": user.get("name"),
-            "role": user.get("role", "user"),
             "created_at": user.get("created_at").isoformat() if user.get("created_at") else None,
         }
 

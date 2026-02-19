@@ -9,6 +9,7 @@ from ..utils.db import get_db
 class Vehicle:
     collection = "vehicles"
     updatable_fields = [
+        "catalog_vehicle_id",
         "make",
         "model",
         "year",
@@ -27,6 +28,7 @@ class Vehicle:
         "acquisition_date",
         "usage_type",
         "driving_conditions",
+        "image_urls",
         "maintenance_history",
     ]
 
@@ -36,6 +38,7 @@ class Vehicle:
         now = datetime.now(timezone.utc)
         vehicle = {
             "user_id": user_id,
+            "catalog_vehicle_id": payload.get("catalog_vehicle_id"),
             "make": payload.get("make"),
             "model": payload.get("model"),
             "year": payload.get("year"),
@@ -54,6 +57,7 @@ class Vehicle:
             "acquisition_date": payload.get("acquisition_date"),
             "usage_type": payload.get("usage_type"),
             "driving_conditions": payload.get("driving_conditions"),
+            "image_urls": payload.get("image_urls", []),
             "maintenance_history": payload.get("maintenance_history", {}),
             "created_at": now,
             "updated_at": now,
@@ -109,6 +113,7 @@ class Vehicle:
         return {
             "id": vehicle["id"],
             "user_id": vehicle["user_id"],
+            "catalog_vehicle_id": vehicle.get("catalog_vehicle_id"),
             "make": vehicle.get("make"),
             "model": vehicle.get("model"),
             "year": vehicle.get("year"),
@@ -128,6 +133,7 @@ class Vehicle:
             "acquisition_date": vehicle.get("acquisition_date"),
             "usage_type": vehicle.get("usage_type"),
             "driving_conditions": vehicle.get("driving_conditions"),
+            "image_urls": vehicle.get("image_urls", []),
             "maintenance_history": vehicle.get("maintenance_history", {}),
             "created_at": vehicle.get("created_at").isoformat() if vehicle.get("created_at") else None,
             "updated_at": vehicle.get("updated_at").isoformat() if vehicle.get("updated_at") else None,

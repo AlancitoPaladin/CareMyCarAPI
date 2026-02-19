@@ -2,16 +2,40 @@ from bson import ObjectId
 from flask import Blueprint, request
 
 from ..models import Vehicle
+from ..models.vehicle_catalog import VehicleCatalog
 from ..utils.decorators import token_required
 from ..utils.validators import validate_vehicle_payload
 
 vehicles_bp = Blueprint("vehicles", __name__)
 
 
+def _apply_catalog_vehicle(payload):
+    catalog_id = (payload.get("catalog_vehicle_id") or "").strip().lower()
+    if not catalog_id:
+        return payload, None
+
+    catalog_vehicle = VehicleCatalog.find_by_id(catalog_id)
+    if not catalog_vehicle:
+        return payload, "catalog_vehicle_id not found in catalog"
+
+    payload["catalog_vehicle_id"] = catalog_id
+    payload["make"] = catalog_vehicle["make"]
+    payload["model"] = catalog_vehicle["model"]
+    payload["vehicle_type"] = catalog_vehicle["vehicle_type"]
+    payload["fuel_type"] = catalog_vehicle["fuel_type"]
+    payload["transmission"] = catalog_vehicle["transmission"]
+    payload["image_urls"] = catalog_vehicle.get("image_urls", [])
+    return payload, None
+
+
 @vehicles_bp.post("")
 @token_required
 def create_vehicle(current_user):
     payload = request.get_json(silent=True) or {}
+    payload, catalog_error = _apply_catalog_vehicle(payload)
+    if catalog_error:
+        return {"error": catalog_error}, 400
+
     errors = validate_vehicle_payload(payload, partial=False)
     if errors:
         return {"errors": errors}, 400
@@ -47,6 +71,10 @@ def update_vehicle(current_user, vehicle_id):
         return {"error": "Invalid vehicle id"}, 400
 
     payload = request.get_json(silent=True) or {}
+    payload, catalog_error = _apply_catalog_vehicle(payload)
+    if catalog_error:
+        return {"error": catalog_error}, 400
+
     errors = validate_vehicle_payload(payload, partial=True)
     if errors:
         return {"errors": errors}, 400
