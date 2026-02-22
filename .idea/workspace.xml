@@ -4,8 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e22524c6-47f8-4072-9abf-f3262fb39f10" name="Changes" comment="Adding more functionalities">
+    <list default="true" id="e22524c6-47f8-4072-9abf-f3262fb39f10" name="Changes" comment="Adding role">
+      <change afterPath="$PROJECT_DIR$/app/models/maintenance_due.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/models/service_order.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/routes/service_orders.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ml_model/cost_model.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/app/ml_model/cost_model.pkl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ml_model/interval_model.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/app/ml_model/interval_model.pkl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ml_model/predict.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ml_model/predict.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ml_model/train_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ml_model/train_model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/maintenance.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/maintenance.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routes/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routes/maintenance.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/maintenance.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/utils/validators.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/validators.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,16 +59,16 @@
     &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/alancarloshernandezhernandez/PycharmProjects/CareMyCarAPI/app/models&quot;
+    &quot;last_opened_file_path&quot;: &quot;/Users/alancarloshernandezhernandez/PycharmProjects/CareMyCarAPI/app/ml_model&quot;
   }
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/app/models" />
+      <recent name="$PROJECT_DIR$/app/ml_model" />
       <recent name="$PROJECT_DIR$/app/routes" />
+      <recent name="$PROJECT_DIR$/app/models" />
       <recent name="$PROJECT_DIR$/app" />
       <recent name="$PROJECT_DIR$/data" />
-      <recent name="$PROJECT_DIR$" />
     </key>
   </component>
   <component name="RunManager" selected="Python.run">
@@ -172,7 +186,15 @@
       <option name="project" value="LOCAL" />
       <updated>1771484862585</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Adding role">
+      <option name="closed" value="true" />
+      <created>1771541544050</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1771541544050</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -181,6 +203,7 @@
     <MESSAGE value="Adding data" />
     <MESSAGE value="Adding ML model and more functionalities" />
     <MESSAGE value="Adding more functionalities" />
-    <option name="LAST_COMMIT_MESSAGE" value="Adding more functionalities" />
+    <MESSAGE value="Adding role" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adding role" />
   </component>
 </project>

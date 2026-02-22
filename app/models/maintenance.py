@@ -35,6 +35,12 @@ class Maintenance:
         return [Maintenance.serialize(i) for i in items]
 
     @staticmethod
+    def find_by_id_for_user(maintenance_id, user_id):
+        db = get_db()
+        item = db[Maintenance.collection].find_one({"_id": ObjectId(maintenance_id), "user_id": user_id})
+        return Maintenance.serialize(item) if item else None
+
+    @staticmethod
     def update_for_user(maintenance_id, user_id, payload):
         db = get_db()
         updates = {

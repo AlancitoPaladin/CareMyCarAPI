@@ -1,5 +1,6 @@
 import re
 
+
 _EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
 _DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
@@ -10,12 +11,15 @@ VALID_USAGE_TYPES = {"ciudad", "carretera", "mixto"}
 VALID_DRIVING_CONDITIONS = {"severas", "normales", "suaves"}
 
 
+
 def validate_email(email):
     return bool(email and _EMAIL_RE.match(email))
 
 
+
 def validate_password(password):
     return bool(password and len(password) >= 8)
+
 
 
 def validate_vehicle_payload(payload, partial=False):
@@ -129,6 +133,7 @@ def validate_vehicle_payload(payload, partial=False):
     return errors
 
 
+
 def validate_maintenance_payload(payload, partial=False):
     errors = []
     required = ["vehicle_id", "service_type", "service_date"]
@@ -143,5 +148,32 @@ def validate_maintenance_payload(payload, partial=False):
 
     if "mileage" in payload and not isinstance(payload["mileage"], int):
         errors.append("mileage must be integer")
+
+    return errors
+
+
+VALID_SERVICE_ORDER_STATUS = {"PROGRAMADO", "EN_PROCESO", "FINALIZADO", "CANCELADO"}
+
+
+def validate_service_order_payload(payload, partial=False):
+    errors = []
+    required = ["vehicle_id", "service_type", "scheduled_date"]
+
+    if not partial:
+        for field in required:
+            if field not in payload:
+                errors.append(f"{field} is required")
+
+    if "scheduled_date" in payload and not _DATE_RE.match(str(payload["scheduled_date"])):
+        errors.append("scheduled_date must use YYYY-MM-DD format")
+
+    if "estimated_cost" in payload and not isinstance(payload["estimated_cost"], (int, float)):
+        errors.append("estimated_cost must be numeric")
+
+    if "final_cost" in payload and not isinstance(payload["final_cost"], (int, float)):
+        errors.append("final_cost must be numeric")
+
+    if "status" in payload and str(payload["status"]).upper() not in VALID_SERVICE_ORDER_STATUS:
+        errors.append("status must be one of: PROGRAMADO, EN_PROCESO, FINALIZADO, CANCELADO")
 
     return errors

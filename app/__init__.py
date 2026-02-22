@@ -1,7 +1,7 @@
 from flask import Flask
 
 from .config import DevelopmentConfig
-from .routes import auth_bp, catalog_bp, maintenance_bp, predictions_bp, vehicles_bp
+from .routes import auth_bp, catalog_bp, maintenance_bp, predictions_bp, service_orders_bp, vehicles_bp
 from .utils.db import init_db
 
 
@@ -15,6 +15,7 @@ def create_app(config_object=None):
     app.register_blueprint(catalog_bp, url_prefix="/api/catalog")
     app.register_blueprint(vehicles_bp, url_prefix="/api/vehicles")
     app.register_blueprint(maintenance_bp, url_prefix="/api/maintenance")
+    app.register_blueprint(service_orders_bp, url_prefix="/api/service-orders")
     app.register_blueprint(predictions_bp, url_prefix="/api")
 
     @app.get("/health")

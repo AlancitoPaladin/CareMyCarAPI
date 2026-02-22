@@ -1,4 +1,5 @@
 import json
+import warnings
 from datetime import datetime, timedelta
 from pathlib import Path
 
@@ -11,6 +12,11 @@ try:
     import pandas as pd
 except Exception:  # pragma: no cover - optional dependency at runtime
     pd = None
+
+try:
+    from sklearn.exceptions import InconsistentVersionWarning
+except Exception:  # pragma: no cover - optional dependency at runtime
+    InconsistentVersionWarning = None
 
 
 DEFAULT_INTERVALS = {
@@ -44,7 +50,23 @@ def _load_model(path):
     if joblib is None or not path.exists():
         return None
     try:
-        return joblib.load(path)
+        with warnings.catch_warnings(record=True) as captured:
+            warnings.simplefilter("always")
+            model = joblib.load(path)
+
+        for warn in captured:
+            message = str(getattr(warn, "message", "") or "")
+            category = getattr(warn, "category", None)
+            is_inconsistent = (
+                (InconsistentVersionWarning is not None and category is InconsistentVersionWarning)
+                or "InconsistentVersionWarning" in message
+                or "Trying to unpickle estimator" in message
+            )
+            if is_inconsistent:
+                # If model version is incompatible, force rule-based fallback.
+                return None
+
+        return model
     except Exception:
         return None
 
