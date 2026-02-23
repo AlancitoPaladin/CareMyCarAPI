@@ -1,10 +1,11 @@
-from datetime import datetime, timezone
+import csv
+from datetime import datetime
+from pathlib import Path
 
 from bson import ObjectId
 from flask import Blueprint, request
-from pymongo import ReturnDocument
 
-from ..utils.db import get_db
+from ..models import Part
 from ..utils.decorators import token_required
 
 parts_bp = Blueprint("parts", __name__)
@@ -23,22 +24,21 @@ VALID_PART_CATEGORIES = {
 }
 
 
-def _serialize_part(item):
-    if not item:
-        return None
-    return {
-        "id": str(item.get("_id")),
-        "user_id": item.get("user_id"),
-        "name": item.get("name"),
-        "category": item.get("category"),
-        "year": item.get("year"),
-        "model": item.get("model"),
-        "compatibility": item.get("compatibility", []),
-        "price": item.get("price"),
-        "quantity": item.get("quantity"),
-        "created_at": item.get("created_at").isoformat() if item.get("created_at") else None,
-        "updated_at": item.get("updated_at").isoformat() if item.get("updated_at") else None,
-    }
+def _load_make_model_options():
+    file_path = Path(__file__).resolve().parents[2] / "data" / "maintenance_costs.csv"
+    if not file_path.exists():
+        return []
+
+    options = []
+    with file_path.open("r", encoding="utf-8") as csv_file:
+        reader = csv.DictReader(csv_file)
+        for row in reader:
+            make = str(row.get("make") or "").strip()
+            model = str(row.get("model") or "").strip()
+            if not make or not model:
+                continue
+            options.append({"make": make, "model": model})
+    return options
 
 
 @parts_bp.get("/options")
@@ -46,20 +46,20 @@ def _serialize_part(item):
 def parts_options(current_user):
     del current_user
     make = (request.args.get("make") or "").strip().lower()
-    db = get_db()
-    rows = list(db["vehicle_catalog"].find({}))
+    rows = _load_make_model_options()
+    makes = sorted({row["make"] for row in rows})
     if make:
-        rows = [r for r in rows if str(r.get("make", "")).strip().lower() == make]
-    models = sorted({str(r.get("model")).strip() for r in rows if r.get("model")})
+        rows = [row for row in rows if row["make"].strip().lower() == make]
+    models = sorted({row["model"] for row in rows})
     years = list(range(datetime.utcnow().year + 1, 1979, -1))
-    return {"categories": sorted(VALID_PART_CATEGORIES), "years": years, "models": models}, 200
+    return {"categories": sorted(VALID_PART_CATEGORIES), "makes": makes, "years": years, "models": models}, 200
 
 
 @parts_bp.post("")
 @token_required
 def create_part(current_user):
     payload = request.get_json(silent=True) or {}
-    required = ["name", "category", "year", "model", "price", "quantity"]
+    required = ["name", "category", "make", "year", "model", "price", "quantity"]
     errors = [f"{f} is required" for f in required if f not in payload]
     if errors:
         return {"errors": errors}, 400
@@ -67,6 +67,18 @@ def create_part(current_user):
     category = str(payload.get("category", "")).strip().lower()
     if category not in VALID_PART_CATEGORIES:
         return {"error": "invalid category"}, 400
+    make = str(payload.get("make") or "").strip()
+    if not make:
+        return {"error": "make must not be empty"}, 400
+    model = str(payload.get("model") or "").strip()
+    valid_options = _load_make_model_options()
+    if valid_options:
+        valid_pair = any(
+            row["make"].strip().lower() == make.lower() and row["model"].strip().lower() == model.lower()
+            for row in valid_options
+        )
+        if not valid_pair:
+            return {"error": "make/model not available in maintenance_costs dataset"}, 400
 
     try:
         year = int(payload.get("year"))
@@ -82,23 +94,20 @@ def create_part(current_user):
     if compatibility is not None and not isinstance(compatibility, list):
         return {"error": "compatibility must be a list"}, 400
 
-    now = datetime.now(timezone.utc)
-    item = {
-        "user_id": current_user["_id"],
-        "name": str(payload.get("name") or "").strip(),
-        "category": category,
-        "year": year,
-        "model": str(payload.get("model") or "").strip(),
-        "compatibility": compatibility or [],
-        "price": price,
-        "quantity": quantity,
-        "created_at": now,
-        "updated_at": now,
-    }
-    db = get_db()
-    result = db["parts"].insert_one(item)
-    item["_id"] = result.inserted_id
-    return {"part": _serialize_part(item)}, 201
+    item = Part.create(
+        current_user["_id"],
+        {
+            "name": str(payload.get("name") or "").strip(),
+            "category": category,
+            "make": make,
+            "year": year,
+            "model": model,
+            "compatibility": compatibility or [],
+            "price": price,
+            "quantity": quantity,
+        },
+    )
+    return {"part": item}, 201
 
 
 @parts_bp.get("")
@@ -112,23 +121,9 @@ def list_parts(current_user):
     except ValueError:
         return {"error": "page/limit must be integer"}, 400
 
-    query = {"user_id": current_user["_id"]}
-    if q:
-        query["$or"] = [
-            {"name": {"$regex": q, "$options": "i"}},
-            {"model": {"$regex": q, "$options": "i"}},
-            {"category": {"$regex": q, "$options": "i"}},
-            {"compatibility": {"$elemMatch": {"$regex": q, "$options": "i"}}},
-        ]
-    if category and category != "all":
-        query["category"] = category
-
-    db = get_db()
-    collection = db["parts"]
-    total = collection.count_documents(query)
-    rows = collection.find(query).sort("created_at", -1).skip((page - 1) * limit).limit(limit)
+    items, total = Part.find_filtered(current_user["_id"], q=q, category=category, page=page, limit=limit)
     return {
-        "items": [_serialize_part(r) for r in rows],
+        "items": items,
         "page": page,
         "limit": limit,
         "total": total,
@@ -140,11 +135,10 @@ def list_parts(current_user):
 def get_part(current_user, part_id):
     if not ObjectId.is_valid(part_id):
         return {"error": "Invalid part id"}, 400
-    db = get_db()
-    row = db["parts"].find_one({"_id": ObjectId(part_id), "user_id": current_user["_id"]})
+    row = Part.find_by_id_for_user(part_id, current_user["_id"])
     if not row:
         return {"error": "Part not found"}, 404
-    return {"part": _serialize_part(row)}, 200
+    return {"part": row}, 200
 
 
 @parts_bp.put("/<part_id>")
@@ -155,7 +149,7 @@ def update_part(current_user, part_id):
 
     payload = request.get_json(silent=True) or {}
     updates = {}
-    allowed = {"name", "category", "year", "model", "compatibility", "price", "quantity"}
+    allowed = {"name", "category", "make", "year", "model", "compatibility", "price", "quantity"}
     for key in allowed:
         if key in payload:
             updates[key] = payload[key]
@@ -171,6 +165,29 @@ def update_part(current_user, part_id):
             updates["year"] = int(updates["year"])
         except (TypeError, ValueError):
             return {"error": "year must be integer"}, 400
+    if "make" in updates:
+        updates["make"] = str(updates["make"]).strip()
+        if not updates["make"]:
+            return {"error": "make must not be empty"}, 400
+    if "model" in updates:
+        updates["model"] = str(updates["model"]).strip()
+        if not updates["model"]:
+            return {"error": "model must not be empty"}, 400
+    if "make" in updates or "model" in updates:
+        current = Part.find_by_id_for_user(part_id, current_user["_id"])
+        if not current:
+            return {"error": "Part not found"}, 404
+        current_make = updates.get("make", current.get("make"))
+        current_model = updates.get("model", current.get("model"))
+        valid_options = _load_make_model_options()
+        if valid_options:
+            valid_pair = any(
+                row["make"].strip().lower() == str(current_make).strip().lower()
+                and row["model"].strip().lower() == str(current_model).strip().lower()
+                for row in valid_options
+            )
+            if not valid_pair:
+                return {"error": "make/model not available in maintenance_costs dataset"}, 400
     if "price" in updates:
         try:
             updates["price"] = float(updates["price"])
@@ -182,16 +199,10 @@ def update_part(current_user, part_id):
         except (TypeError, ValueError):
             return {"error": "quantity must be integer"}, 400
 
-    updates["updated_at"] = datetime.now(timezone.utc)
-    db = get_db()
-    row = db["parts"].find_one_and_update(
-        {"_id": ObjectId(part_id), "user_id": current_user["_id"]},
-        {"$set": updates},
-        return_document=ReturnDocument.AFTER,
-    )
+    row = Part.update_for_user(part_id, current_user["_id"], updates)
     if not row:
         return {"error": "Part not found"}, 404
-    return {"part": _serialize_part(row)}, 200
+    return {"part": row}, 200
 
 
 @parts_bp.delete("/<part_id>")
@@ -199,8 +210,7 @@ def update_part(current_user, part_id):
 def delete_part(current_user, part_id):
     if not ObjectId.is_valid(part_id):
         return {"error": "Invalid part id"}, 400
-    db = get_db()
-    result = db["parts"].delete_one({"_id": ObjectId(part_id), "user_id": current_user["_id"]})
-    if result.deleted_count == 0:
+    deleted = Part.delete_for_user(part_id, current_user["_id"])
+    if not deleted:
         return {"error": "Part not found"}, 404
     return {"status": "deleted"}, 200
