@@ -1,4 +1,5 @@
 import re
+from datetime import date, datetime
 
 
 _EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
@@ -164,8 +165,17 @@ def validate_service_order_payload(payload, partial=False):
             if field not in payload:
                 errors.append(f"{field} is required")
 
-    if "scheduled_date" in payload and not _DATE_RE.match(str(payload["scheduled_date"])):
-        errors.append("scheduled_date must use YYYY-MM-DD format")
+    if "scheduled_date" in payload:
+        raw_date = str(payload["scheduled_date"])
+        if not _DATE_RE.match(raw_date):
+            errors.append("scheduled_date must use YYYY-MM-DD format")
+        else:
+            try:
+                parsed = datetime.strptime(raw_date, "%Y-%m-%d").date()
+                if parsed < date.today():
+                    errors.append("scheduled_date must be today or a future date")
+            except ValueError:
+                errors.append("scheduled_date is not a valid date")
 
     if "estimated_cost" in payload and not isinstance(payload["estimated_cost"], (int, float)):
         errors.append("estimated_cost must be numeric")

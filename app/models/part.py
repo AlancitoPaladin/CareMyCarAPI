@@ -62,6 +62,32 @@ class Part:
         return db[Part.collection].find_one({"_id": ObjectId(part_id), "user_id": user_id})
 
     @staticmethod
+    def find_raw_by_id(part_id):
+        db = get_db()
+        return db[Part.collection].find_one({"_id": ObjectId(part_id)})
+
+    @staticmethod
+    def find_marketplace_filtered(agency_user_ids, q="", category="", page=1, limit=20):
+        db = get_db()
+        query = {"quantity": {"$gt": 0}}
+        if agency_user_ids:
+            query["user_id"] = {"$in": agency_user_ids}
+        if q:
+            query["$or"] = [
+                {"name": {"$regex": q, "$options": "i"}},
+                {"make": {"$regex": q, "$options": "i"}},
+                {"model": {"$regex": q, "$options": "i"}},
+                {"category": {"$regex": q, "$options": "i"}},
+                {"compatibility": {"$elemMatch": {"$regex": q, "$options": "i"}}},
+            ]
+        if category and category != "all":
+            query["category"] = category
+
+        total = db[Part.collection].count_documents(query)
+        rows = db[Part.collection].find(query).sort("created_at", -1).skip((page - 1) * limit).limit(limit)
+        return [Part.serialize(r) for r in rows], total
+
+    @staticmethod
     def find_for_order_options(user_id, make="", model="", year=None):
         db = get_db()
         query = {"user_id": user_id}

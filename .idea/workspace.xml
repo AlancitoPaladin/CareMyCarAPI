@@ -4,8 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e22524c6-47f8-4072-9abf-f3262fb39f10" name="Changes" comment="Adding role">
+    <list default="true" id="e22524c6-47f8-4072-9abf-f3262fb39f10" name="Changes" comment="Adding semi-final">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/order.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/order.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/part.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/part.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routes/orders.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/orders.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/utils/validators.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/validators.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -188,8 +195,27 @@
       <option name="project" value="LOCAL" />
       <updated>1771801724021</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Adding semi-final">
+      <option name="closed" value="true" />
+      <created>1771805488150</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1771805488150</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="First commit" />
@@ -198,6 +224,7 @@
     <MESSAGE value="Adding ML model and more functionalities" />
     <MESSAGE value="Adding more functionalities" />
     <MESSAGE value="Adding role" />
-    <option name="LAST_COMMIT_MESSAGE" value="Adding role" />
+    <MESSAGE value="Adding semi-final" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adding semi-final" />
   </component>
 </project>

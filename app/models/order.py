@@ -16,6 +16,7 @@ class Order:
         now = datetime.now(timezone.utc)
         item = {
             "user_id": payload.get("user_id"),
+            "buyer_id": payload.get("buyer_id"),
             "client_name": payload.get("client_name"),
             "vin": payload.get("vin"),
             "make": payload.get("make"),
@@ -64,6 +65,48 @@ class Order:
         return Order.serialize(row) if row else None
 
     @staticmethod
+    def find_purchases_by_buyer(buyer_id, status="", page=1, limit=20):
+        db = get_db()
+        query = {"buyer_id": buyer_id}
+        if status and status != "all":
+            query["status"] = status
+
+        total = db[Order.collection].count_documents(query)
+        rows = db[Order.collection].find(query).sort("created_at", -1).skip((page - 1) * limit).limit(limit)
+        return [Order.serialize(r) for r in rows], total
+
+    @staticmethod
+    def get_daily_report_for_seller(seller_id, report_date):
+        db = get_db()
+        day_start = datetime(report_date.year, report_date.month, report_date.day, tzinfo=timezone.utc)
+        day_end = datetime(
+            report_date.year, report_date.month, report_date.day, 23, 59, 59, 999999, tzinfo=timezone.utc
+        )
+        query = {
+            "user_id": seller_id,
+            "created_at": {"$gte": day_start, "$lte": day_end},
+        }
+        rows = [Order.serialize(r) for r in db[Order.collection].find(query).sort("created_at", -1)]
+
+        total_sales = sum(float(r.get("total_price") or 0.0) for r in rows)
+        total_orders = len(rows)
+        pending = sum(1 for r in rows if r.get("status") == "pending")
+        confirmed = sum(1 for r in rows if r.get("status") == "confirmed")
+        delivered = sum(1 for r in rows if r.get("status") == "delivered")
+        canceled = sum(1 for r in rows if r.get("status") == "canceled")
+
+        return {
+            "date": report_date.isoformat(),
+            "total_orders": total_orders,
+            "total_sales": round(total_sales, 2),
+            "pending_count": pending,
+            "confirmed_count": confirmed,
+            "delivered_count": delivered,
+            "canceled_count": canceled,
+            "items": rows,
+        }
+
+    @staticmethod
     def update_for_user(order_id, user_id, payload):
         db = get_db()
         updates = {k: payload[k] for k in Order.updatable_fields if k in payload}
@@ -90,6 +133,7 @@ class Order:
         return {
             "id": str(item.get("_id")),
             "user_id": item.get("user_id"),
+            "buyer_id": item.get("buyer_id"),
             "client_name": item.get("client_name"),
             "vin": item.get("vin"),
             "make": item.get("make"),
